@@ -198,6 +198,11 @@ func (l *BatchSubmitter) loadBlocksIntoState(ctx context.Context) error {
 		latestBlock = block
 	}
 
+	if latestBlock == nil {
+		l.Log.Warn("No blocks were processed")
+		return errors.New("no blocks processed")
+	}
+
 	l2ref, err := derive.L2BlockToBlockRef(l.RollupConfig, latestBlock)
 	if err != nil {
 		l.Log.Warn("Invalid L2 block loaded into state", "err", err)
